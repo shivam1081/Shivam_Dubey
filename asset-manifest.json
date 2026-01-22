@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/Shivam_Dubey/static/css/main.4fe0a585.css",
+    "main.js": "/Shivam_Dubey/static/js/main.8763268c.js",
+    "static/media/Shivam_Profile_Pic.JPG": "/Shivam_Dubey/static/media/Shivam_Profile_Pic.4ea88c27ec34083c2ce0.JPG",
+    "index.html": "/Shivam_Dubey/index.html",
+    "main.4fe0a585.css.map": "/Shivam_Dubey/static/css/main.4fe0a585.css.map",
+    "main.8763268c.js.map": "/Shivam_Dubey/static/js/main.8763268c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4fe0a585.css",
+    "static/js/main.8763268c.js"
+  ]
+}
