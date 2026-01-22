@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, Download } from 'lucide-react';
 import { navLinks, personalInfo } from '../data/mock';
 import { Button } from './ui/button';
@@ -6,6 +6,7 @@ import { Button } from './ui/button';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const mobileNavRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,6 +15,38 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close mobile nav when user interacts outside it (touch/pointer) or scrolls with wheel
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleOutsidePointer = (e) => {
+      if (mobileNavRef.current && !mobileNavRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    const handleWheel = () => setIsOpen(false);
+
+    document.addEventListener('pointerdown', handleOutsidePointer);
+    document.addEventListener('touchstart', handleOutsidePointer);
+    window.addEventListener('wheel', handleWheel, { passive: true });
+
+    return () => {
+      document.removeEventListener('pointerdown', handleOutsidePointer);
+      document.removeEventListener('touchstart', handleOutsidePointer);
+      window.removeEventListener('wheel', handleWheel);
+    };
+  }, [isOpen]);
+
+  // Prevent background scrolling when mobile nav is open
+  useEffect(() => {
+    const previous = document.body.style.overflow;
+    if (isOpen) document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previous || '';
+    };
+  }, [isOpen]);
 
   const handleNavClick = (e, href) => {
     e.preventDefault();
@@ -87,8 +120,17 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Navigation */}
+      {isOpen && (
+        <div
+          className="lg:hidden fixed inset-0 z-40 bg-black/30 backdrop-blur-sm"
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       <div
-        className={`lg:hidden absolute top-full left-0 right-0 bg-[#1a1c1b]/98 backdrop-blur-md transition-all duration-300 overflow-hidden ${
+        ref={mobileNavRef}
+        className={`lg:hidden absolute top-full left-0 right-0 bg-[#1a1c1b]/98 backdrop-blur-md transition-all duration-300 overflow-hidden z-50 ${
           isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
