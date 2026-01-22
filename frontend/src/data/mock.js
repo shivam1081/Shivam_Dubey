@@ -1,4 +1,4 @@
-// Portfolio Mock Data - Easy to update with real content
+// Portfolio Mock Data - Easy to update with real content.
 import profilePic from "../assets/Shivam_Profile_Pic.JPG";
 
 export const personalInfo = {
