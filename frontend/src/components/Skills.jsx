@@ -34,7 +34,7 @@ const Skills = () => {
 
         {/* Skills Tabs */}
         <Tabs defaultValue="frontend" className="w-full" onValueChange={setActiveTab}>
-          <TabsList className="flex flex-wrap justify-center gap-2 mb-12 bg-transparent">
+          <TabsList className="flex h-auto flex-wrap justify-center gap-3 mb-12 bg-transparent">
             {skillCategories.map((category) => (
               <TabsTrigger
                 key={category.id}

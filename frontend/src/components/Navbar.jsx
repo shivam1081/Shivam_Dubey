@@ -16,35 +16,32 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile nav when user interacts outside it (touch/pointer) or scrolls with wheel
+  // Close mobile nav when user interacts outside it (touch/pointer) or scrolls
   useEffect(() => {
     if (!isOpen) return;
 
     const handleOutsidePointer = (e) => {
+      // Ignore if clicking the toggle button to avoid conflict with its onClick
+      if (e.target.closest('button[aria-label="Toggle menu"]')) {
+        return;
+      }
       if (mobileNavRef.current && !mobileNavRef.current.contains(e.target)) {
         setIsOpen(false);
       }
     };
 
-    const handleWheel = () => setIsOpen(false);
+    const handleScroll = () => setIsOpen(false);
 
     document.addEventListener('pointerdown', handleOutsidePointer);
     document.addEventListener('touchstart', handleOutsidePointer);
-    window.addEventListener('wheel', handleWheel, { passive: true });
+    window.addEventListener('wheel', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       document.removeEventListener('pointerdown', handleOutsidePointer);
       document.removeEventListener('touchstart', handleOutsidePointer);
-      window.removeEventListener('wheel', handleWheel);
-    };
-  }, [isOpen]);
-
-  // Prevent background scrolling when mobile nav is open
-  useEffect(() => {
-    const previous = document.body.style.overflow;
-    if (isOpen) document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = previous || '';
+      window.removeEventListener('wheel', handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [isOpen]);
 
